@@ -1,0 +1,64 @@
+name: snowflake_cicd
+
+on:
+  push:
+    branches:
+      - main  # Trigger on push to the main branch
+  workflow_dispatch:  # Allow manual trigger
+
+jobs:
+  run-sql:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.8'
+
+    - name: Install Snowflake Connector
+      run: |
+        pip install snowflake-connector-python
+
+    - name: Get changed SQL files
+      id: get-changed-files
+      run: |
+        echo "::set-output name=files::$(git diff --name-only HEAD^ HEAD | grep -E '\.sql$' | tr '\n' ' ')"
+
+    - name: Run SQL Scripts
+      if: steps.get-changed-files.outputs.files != ''
+      env:
+        SNOWFLAKE_ACCOUNT: ${{ secrets.SF_ACCOUNT }}
+        SNOWFLAKE_USER: ${{ secrets.SF_USER }}
+        SNOWFLAKE_PRIVATE_KEY: ${{ secrets.SNOWFLAKE_PRIVATE_KEY }}
+        SNOWFLAKE_WAREHOUSE: ${{ secrets.SNOWFLAKE_WAREHOUSE }}
+        SNOWFLAKE_DATABASE: ${{ secrets.SNOWFLAKE_DATABASE }}
+        SNOWFLAKE_SCHEMA: ${{ secrets.SNOWFLAKE_SCHEMA }}
+      run: |
+        changed_files="${{ steps.get-changed-files.outputs.files }}"
+        for file in $changed_files; do
+          python - <<EOF
+          import os
+          import snowflake.connector
+
+          conn = snowflake.connector.connect(
+              user=os.getenv('SNOWFLAKE_USER'),
+              account=os.getenv('SNOWFLAKE_ACCOUNT'),
+              private_key=os.getenv('SNOWFLAKE_PRIVATE_KEY').replace('\\n', '\n'),
+              warehouse=os.getenv('SNOWFLAKE_WAREHOUSE'),
+              database=os.getenv('SNOWFLAKE_DATABASE'),
+              schema=os.getenv('SNOWFLAKE_SCHEMA')
+          )
+
+          with open('$file', 'r') as sql_file:
+              sql_script = sql_file.read()
+
+          with conn.cursor() as cursor:
+              cursor.execute(sql_script)
+
+          conn.close()
+          EOF
+        done
