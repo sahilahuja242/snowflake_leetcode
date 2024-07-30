@@ -4,10 +4,7 @@ insert into LEETCODE.LEETCODE.Employee (id, name, salary, managerId) values ('1'
 insert into LEETCODE.LEETCODE.Employee (id, name, salary, managerId) values ('2', 'Henry', '80000', '4');
 insert into LEETCODE.LEETCODE.Employee (id, name, salary, managerId) values ('3', 'Sam', '60000', NULL);
 insert into LEETCODE.LEETCODE.Employee (id, name, salary, managerId) values ('4', 'Max', '90000', NULL);
-
-
 --Quest
 --Write a solution to find the employees who earn more than their managers.
-
 --Solution
 --select p.*, m.* from EMPLOYEE p join EMPLOYEE m on p.managerid = m.id;

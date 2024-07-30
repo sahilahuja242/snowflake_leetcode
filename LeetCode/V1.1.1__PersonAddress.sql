@@ -6,7 +6,6 @@ insert into LEETCODE.LEETCODE.Person (personId, lastName, firstName) values ('2'
 Truncate table LEETCODE.LEETCODE.Address;
 insert into LEETCODE.LEETCODE.Address (addressId, personId, city, state) values ('1', '2', 'New York City', 'New York');
 insert into LEETCODE.LEETCODE.Address (addressId, personId, city, state) values ('2', '3', 'Leetcode', 'California');
-
 -- Question
 -- Write a solution to report the first name, last name, city, and state of each person in the Person table. 
 -- If the address of a personId is not present in the Address table, report null instead.
