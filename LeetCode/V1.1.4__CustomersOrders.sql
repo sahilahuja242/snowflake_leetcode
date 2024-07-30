@@ -8,3 +8,7 @@ insert into LEETCODE.LEETCODE.Customers (id, name) values ('4', 'Max');
 Truncate table LEETCODE.LEETCODE.Orders;
 insert into LEETCODE.LEETCODE.Orders (id, customerId) values ('1', '3');
 insert into LEETCODE.LEETCODE.Orders (id, customerId) values ('2', '1');
+--QUestion
+--Write a solution to find all customers who never order anything.
+--Solution 
+--select name as customers from customers where id not in (select customerid from orders);

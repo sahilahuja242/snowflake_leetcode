@@ -9,3 +9,11 @@ insert into LEETCODE.LEETCODE.EmployeeDep (id, name, salary, departmentId) value
 Truncate table LEETCODE.LEETCODE.Department;
 insert into LEETCODE.LEETCODE.Department (id, name) values ('1', 'IT');
 insert into LEETCODE.LEETCODE.Department (id, name) values ('2', 'Sales');
+
+--Question 
+--Write a solution to find employees who have the highest salary in each of the departments.
+--Solution
+--with cte as (
+-- select Name,salary,departmentid,
+-- max(salary) over (partition by departmentid) as maxsal from EmployeeDep
+-- )select d.name as department , e.name as Employee ,e.salary as Salary  from cte e join department d on e.departmentid = d.id where e.salary = e.maxsal;
