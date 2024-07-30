@@ -10,7 +10,6 @@ Truncate table Department;
 insert into Department (id, name) values ('1', 'IT');
 insert into Department (id, name) values ('2', 'Sales');
 
-
 --Question
 --Write a solution to find employees who have the highest salary in each of the departments.
 
