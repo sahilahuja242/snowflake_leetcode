@@ -9,7 +9,3 @@ insert into LEETCODE.LEETCODE.EmployeeDep (id, name, salary, departmentId) value
 Truncate table LEETCODE.LEETCODE.Department;
 insert into LEETCODE.LEETCODE.Department (id, name) values ('1', 'IT');
 insert into LEETCODE.LEETCODE.Department (id, name) values ('2', 'Sales');
---Question
---Write a solution to find employees who have the highest salary in each of the departments.
---Solution
---select * from department;
